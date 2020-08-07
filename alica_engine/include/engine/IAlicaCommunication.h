@@ -3,6 +3,11 @@
 #include <memory>
 #include <string>
 
+namespace essentials
+{
+class IDManager;
+}
+
 namespace alica
 {
 struct AlicaEngineInfo;
@@ -20,9 +25,10 @@ class RoleSwitch;
 class IAlicaCommunication
 {
 public:
-    IAlicaCommunication(AlicaEngine* ae)
-            : ae(ae){};
-    virtual ~IAlicaCommunication() {}
+    IAlicaCommunication(AlicaEngine& ae, essentials::IDManager& idManager)
+            : ae(ae)
+            , idManager(idManager){};
+    virtual ~IAlicaCommunication() = default;
 
     virtual void sendAllocationAuthority(const AllocationAuthorityInfo& aai) const = 0;
     virtual void sendAlicaEngineInfo(const AlicaEngineInfo& bi) const = 0;
@@ -49,7 +55,8 @@ public:
     virtual void stopCommunication() = 0;
 
 protected:
-    AlicaEngine* ae;
+    AlicaEngine& ae;
+    essentials::IDManager& idManager;
 };
 
 } /* namespace alica */

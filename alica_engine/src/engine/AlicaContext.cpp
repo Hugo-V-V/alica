@@ -1,6 +1,9 @@
-#include <stdio.h>
 #include "engine/AlicaContext.h"
 #include "engine/AlicaEngine.h"
+#include "engine/IRoleAssignment.h"
+#include "engine/teammanager/TeamManager.h"
+
+#include <stdio.h>
 
 #include <essentials/IdentifierConstPtr.h>
 
@@ -101,7 +104,8 @@ essentials::IdentifierConstPtr AlicaContext::getLocalAgentId() const
  * getLocalAgentName() instead.
  * @return
  */
-std::string AlicaContext::getRobotName() {
+std::string AlicaContext::getRobotName()
+{
     return getLocalAgentName();
 }
 
@@ -113,6 +117,21 @@ std::string AlicaContext::getLocalAgentName()
 void AlicaContext::setLocalAgentName(const std::string& name)
 {
     essentials::SystemConfig::getInstance().setHostname(name);
+}
+
+const alica::Role* AlicaContext::getLocalAgentRole()
+{
+    return _engine->getRoleAssignment().getOwnRole();
+}
+
+ActiveAgentIdView AlicaContext::getActiveAgentIDs()
+{
+    return _engine->getTeamManager().getActiveAgentIds();
+}
+
+ActiveAgentView AlicaContext::getActiveAgents()
+{
+    return _engine->getTeamManager().getActiveAgents();
 }
 
 void AlicaContext::setRootPath(const std::string& path)

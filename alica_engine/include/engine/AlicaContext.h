@@ -10,6 +10,7 @@
 #include "engine/IConstraintCreator.h"
 #include "engine/IUtilityCreator.h"
 #include "engine/constraintmodul/ISolver.h"
+#include "engine/teammanager/TeamManager.h"
 
 #include <essentials/IDManager.h>
 
@@ -295,6 +296,12 @@ public:
      */
     void stepEngine();
 
+    const alica::Role* getLocalAgentRole();
+
+    ActiveAgentIdView getActiveAgentIDs();
+
+    ActiveAgentView getActiveAgents();
+
     /**
      * If present, returns the ID corresponding to the given prototype.
      * Otherwise, it creates a new one, stores, and returns it.
@@ -323,7 +330,7 @@ public:
      */
     essentials::IdentifierConstPtr getIDFromBytes(const uint8_t* idBytes, int idSize, uint8_t type = essentials::Identifier::UUID_TYPE);
 
-    essentials::IdentifierConstPtr generateID(std::size_t size);
+    essentials::IdentifierConstPtr generateID(std::size_t size = 16);
 
     // TODO: Implement
     template <class T>
@@ -362,9 +369,9 @@ void AlicaContext::setCommunicator(Args&&... args)
 {
     static_assert(std::is_base_of<IAlicaCommunication, CommunicatorType>::value, "Must be derived from IAlicaCommunication");
 #if (defined __cplusplus && __cplusplus >= 201402L)
-    _communicator = std::make_unique<CommunicatorType>(_engine.get(), std::forward<Args>(args)...);
+    _communicator = std::make_unique<CommunicatorType>(*(_engine.get()), *(_idManager.get()), std::forward<Args>(args)...);
 #else
-    _communicator = std::unique_ptr<CommunicatorType>(new CommunicatorType(_engine.get(), std::forward<Args>(args)...));
+    _communicator = std::unique_ptr<CommunicatorType>(new CommunicatorType(*(_engine.get()), *(_idManager.get()), std::forward<Args>(args)...));
 #endif
 }
 

@@ -11,7 +11,7 @@ struct Queues;
 class AlicaDummyCommunication : public alica::IAlicaCommunication
 {
 public:
-    AlicaDummyCommunication(alica::AlicaEngine* ae);
+    AlicaDummyCommunication(alica::AlicaEngine& ae, essentials::IDManager& idManager);
     virtual ~AlicaDummyCommunication();
 
     void tick() override;
@@ -28,7 +28,7 @@ public:
 
     void startCommunication() override;
     void stopCommunication() override;
-    alica::AlicaEngine* getEngine() const { return ae; }
+    alica::AlicaEngine& getEngine() const { return ae; }
 
 private:
     bool _isRunning;
