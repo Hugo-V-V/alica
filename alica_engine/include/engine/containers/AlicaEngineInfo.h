@@ -36,4 +36,11 @@ struct AlicaEngineInfo
 
     stdAlicaEngineInfo toStandard() const { return std::make_tuple(senderID, masterPlan, currentPlan, currentState, currentRole, currentTask, robotIDsWithMe); }
 };
+
+inline std::ostream& operator<<(std::ostream& o, const AlicaEngineInfo& aei)
+{
+    o << "AEI Sender: " << aei.senderID << " Plan: " << aei.currentPlan << " Role: " << aei.currentRole << " State: " << aei.currentState << " Task: " << aei.currentTask << " MasterPlan: " << aei.masterPlan << std::endl;
+    return o;
+}
+
 } // namespace alica

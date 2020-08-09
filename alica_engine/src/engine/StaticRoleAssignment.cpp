@@ -77,6 +77,7 @@ void StaticRoleAssignment::calculateRoles()
                     // probably nothing is reacting on this message, but anyway we send it
                     // TODO: fix this take context
                     RoleSwitch rs;
+                    rs.senderID = agent->getId();
                     rs.roleID = role->getId();
                     _ae->getCommunicator().sendRoleSwitch(rs);
                 }
